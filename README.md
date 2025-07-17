@@ -18,7 +18,7 @@ Este projeto é um sistema web para gestão de bibliotecas, desenvolvido em PHP 
 ```
 GORDON/
 ├── app/                            # Lógica de negócio e componentes compartilhados
-│   └── menu.php                    # Menu principal (responsivo, exibe nome, opções e logout)
+│   ├── menu.php                    # Menu principal (responsivo, exibe nome, opções e logout)
 │   ├── conexao.php                 # Conexão com o banco de dados MySQL
 │   ├── funcoes.php                 # Funções utilitárias PHP
 │   └── acesso_negado.php           # Página de acesso negado
