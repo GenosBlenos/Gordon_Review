@@ -1,0 +1,6 @@
+RewriteEngine On
+
+# Redireciona tudo para a pasta pública exceto arquivos existentes
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ public/$1 [L]
