@@ -3,11 +3,18 @@ session_start();
 require __DIR__ . '/../app/funcoes.php';
 require __DIR__ . '/../app/conexao.php';
 
-if (!isset($_SESSION['logado']) || !isAdmin()) {
+if (!isset($_SESSION['logado']) || !isLoggedIn()) {
     header("Location: login.php");
     exit();
 }
-$usuario_id = isset($_GET['usuario']) ? (int)$_GET['usuario'] : 0;
+
+$usuario_id = 0;
+if (isAdmin()) {
+    $usuario_id = isset($_GET['usuario']) ? (int)$_GET['usuario'] : 0;
+} elseif (isUser()) {
+    $usuario_id = isset($_SESSION['usuario_id']) ? (int)$_SESSION['usuario_id'] : 0;
+}
+
 $usuario = null;
 $pagamentos = null;
 if ($usuario_id > 0) {
@@ -23,8 +30,8 @@ if ($usuario_id > 0) {
     $stmt2->bind_param('i', $usuario_id);
     $stmt2->execute();
     $pagamentos = $stmt2->get_result();
-} else {
-    // Se não houver filtro de usuário, mostra todos os pagamentos
+} else if (isAdmin()) {
+    // Se não houver filtro de usuário, mostra todos os pagamentos (apenas para admin)
     $pagamentos = $conn->query("SELECT p.*, u.NOME as usuario_nome FROM pagamentos p LEFT JOIN pm_usua u ON p.usuario_id = u.CODIGO ORDER BY p.data_pagamento DESC");
 }
 function gerarVerificador($pagamento) {
@@ -62,6 +69,12 @@ function gerarVerificador($pagamento) {
             <?php if ($usuario): ?>
                 <p class="text-center"><strong>Usuário:</strong> <?= htmlspecialchars($usuario['NOME']) ?> (Cód: <?= $usuario_id ?>)</p>
             <?php endif; ?>
+            <form method="GET" action="extrato_multas.php" class="mb-4">
+                <div class="input-group">
+                    <input type="text" name="verificador" class="form-control" placeholder="Buscar comprovante pelo código verificador" value="<?= isset($_GET['verificador']) ? htmlspecialchars($_GET['verificador']) : '' ?>">
+                    <button class="btn btn-primary" type="submit">Buscar</button>
+                </div>
+            </form>
             <div class="table-responsive">
             <table class="tabela mb-4">
                 <thead class="table-light">
@@ -74,16 +87,46 @@ function gerarVerificador($pagamento) {
                     </tr>
                 </thead>
                 <tbody>
-                <?php if ($pagamentos && $pagamentos->num_rows > 0): ?>
-                    <?php while ($p = $pagamentos->fetch_assoc()): ?>
-                        <tr>
-                            <td><?= $p['id'] ?></td>
-                            <td>R$ <?= number_format($p['valor'],2,',','.') ?></td>
-                            <td><?= date('d/m/Y H:i', strtotime($p['data_pagamento'])) ?></td>
-                            <td><span class="badge bg-primary" style="font-family:monospace; font-size:1em;"><?= gerarVerificador($p) ?></span></td>
-                            <td><a href="comprovante_multa.php?id=<?= $p['id'] ?>" class="btn btn-sm btn-outline-primary">Ver</a></td>
-                        </tr>
-                    <?php endwhile; ?>
+                <?php
+                $verificador = isset($_GET['verificador']) ? trim($_GET['verificador']) : '';
+                if ($verificador !== '') {
+                    $pagamentos_filtrados = [];
+                    if ($pagamentos && $pagamentos->num_rows > 0) {
+                        while ($p = $pagamentos->fetch_assoc()) {
+                            if (strpos(gerarVerificador($p), $verificador) !== false) {
+                                $pagamentos_filtrados[] = $p;
+                            }
+                        }
+                    }
+                    $pagamentos = $pagamentos_filtrados;
+                }
+                ?>
+                <?php
+                $is_array_pagamentos = is_array($pagamentos) || $pagamentos instanceof ArrayObject;
+                $tem_pagamentos = $is_array_pagamentos ? count($pagamentos) > 0 : ($pagamentos && $pagamentos->num_rows > 0);
+                ?>
+                <?php if ($tem_pagamentos): ?>
+                    <?php if ($is_array_pagamentos): ?>
+                        <?php foreach ($pagamentos as $p): ?>
+                            <tr>
+                                <td><?= $p['id'] ?></td>
+                                <td>R$ <?= number_format($p['valor'],2,',','.') ?></td>
+                                <td><?= date('d/m/Y H:i', strtotime($p['data_pagamento'])) ?></td>
+                                <td><span class="badge bg-primary" style="font-family:monospace; font-size:1em;"><?= gerarVerificador($p) ?></span></td>
+                                <td><a href="comprovante_multa.php?id=<?= $p['id'] ?>" class="btn btn-sm btn-outline-primary">Ver</a></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <?php while ($p = $pagamentos->fetch_assoc()): ?>
+                            <tr>
+                                <td><?= $p['id'] ?></td>
+                                <td>R$ <?= number_format($p['valor'],2,',','.') ?></td>
+                                <td><?= date('d/m/Y H:i', strtotime($p['data_pagamento'])) ?></td>
+                                <td><span class="badge bg-primary" style="font-family:monospace; font-size:1em;"><?= gerarVerificador($p) ?></span></td>
+                                <td><a href="comprovante_multa.php?id=<?= $p['id'] ?>" class="btn btn-sm btn-outline-primary">Ver</a></td>
+                            </tr>
+                        <?php endwhile; ?>
+                    <?php endif; ?>
                 <?php else: ?>
                     <tr><td colspan="5" class="text-center">Nenhum pagamento encontrado.</td></tr>
                 <?php endif; ?>

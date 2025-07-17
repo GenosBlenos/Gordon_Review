@@ -29,6 +29,8 @@
                 <ul class="navbar-nav flex-row ms-2" style="flex-wrap: wrap; gap: 0.25rem;">
                     <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'usuario'): ?>
                         <li class="nav-item"><a class="nav-link px-2" style="color: #fff" href="acervo.php?disponivel=1">Acervo Disponível</a></li>
+                        <li class="nav-item"><a class="nav-link px-2" style="color: #fff" href="dominio_publico.php">Domínio Público</a></li>
+                        <li class="nav-item"><a class="nav-link px-2" style="color: #fff" href="extrato_multas.php">Meus Comprovantes</a></li>
                     <?php elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
                         <li class="nav-item"><a class="nav-link px-2" style="color: #fff" href="acervo.php">Acervo</a></li>
                         <li class="nav-item"><a class="nav-link px-2" style="color: #fff" href="dominio_publico.php">Dominio Público</a></li>
@@ -80,6 +82,8 @@
     <ul class="navbar-nav flex-column">
         <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'usuario'): ?>
             <li class="nav-item"><a class="nav-link" href="acervo.php?disponivel=1">Acervo Disponível</a></li>
+            <li class="nav-item"><a class="nav-link" href="dominio_publico.php">Domínio Público</a></li>
+            <li class="nav-item"><a class="nav-link" href="extrato_multas.php">Meus Comprovantes</a></li>
         <?php elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
             <li class="nav-item"><a class="nav-link" href="acervo.php">Acervo</a></li>
             <li class="nav-item"><a class="nav-link" href="dominio_publico.php">Dominio Público</a></li>
