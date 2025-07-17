@@ -17,40 +17,40 @@ Este projeto é um sistema web para gestão de bibliotecas, desenvolvido em PHP 
 
 ```
 GORDON/
-├── app/                               # Lógica de negócio e componentes compartilhados
-│   ├── menu.php                       # Menu principal (responsivo, exibe nome, opções e logout)
-│   ├── conexao.php                    # Conexão com o banco de dados MySQL
-│   ├── funcoes.php                    # Funções utilitárias PHP
-│   ├── acesso_negado.php              # Página de acesso negado
+├── app/                            # Lógica de negócio e componentes compartilhados
+│   ├── menu.php                    # Menu principal (responsivo, exibe nome, opções e logout)
+│   ├── conexao.php                 # Conexão com o banco de dados MySQL
+│   ├── funcoes.php                 # Funções utilitárias PHP
+│   ├── acesso_negado.php           # Página de acesso negado
 ├── api/
-│   ├── categorias-chart.php           # Dados para gráfico de temas
-│   ├── pesquisar-livro.php            # Busca dinâmica de livros
-│   └── pesquisar-usuario.php          # Busca dinâmica de usuários
+│   ├── categorias-chart.php        # Dados para gráfico de temas
+│   ├── pesquisar-livro.php         # Busca dinâmica de livros
+│   └── pesquisar-usuario.php       # Busca dinâmica de usuários
 ├── public/
-│   ├── acervo.php                     # Listagem e pesquisa de livros
-│   ├── cadastro_usuario.php           # Cadastro de novos usuários
-│   ├── cadastro-admin.php             # Cadastro de administradores
-│   ├── comprovante_multa.php          # Controle de multas e verificação de comprovantes
-│   ├── devolucao.php                  # Controle de devoluções
-│   ├── dominio_publico.php            # Listagens de livros digitais de dominio público para download
-│   ├── emprestimo.php                 # Controle de empréstimos
-│   ├── home.php                       # Dashboard com cards e gráficos
-│   ├── usuario.php                    # Gestão de usuários
-│   ├── livros.php                     # Cadastro de livros
-│   ├── login.php                      # Tela de login
-│   ├── logout.php                     # Logout do sistema
+│   ├── acervo.php                  # Listagem e pesquisa de livros
+│   ├── cadastro_usuario.php        # Cadastro de novos usuários
+│   ├── cadastro-admin.php          # Cadastro de administradores
+│   ├── comprovante_multa.php       # Controle de multas e verificação de comprovantes
+│   ├── devolucao.php               # Controle de devoluções
+│   ├── dominio_publico.php         # Listagens de livros digitais de dominio público para download
+│   ├── emprestimo.php              # Controle de empréstimos
+│   ├── home.php                    # Dashboard com cards e gráficos
+│   ├── usuario.php                 # Gestão de usuários
+│   ├── livros.php                  # Cadastro de livros
+│   ├── login.php                   # Tela de login
+│   ├── logout.php                  # Logout do sistema
 ├── styles/
-│   └── sense.css                      # CSS principal, responsivo e customizado
+│   └── sense.css                   # CSS principal, responsivo e customizado
 ├── script/
-│   └── script.js                      # Scripts JS para interações do menu e busca
-├── src/                               # Imagens e assets
-│   ├── gordon.jpg                     # Logo principal
-│   ├── barra.png                      # Imagem decorativa
-│   ├── barra2.png                     # Imagem decorativa
-│   └── salto.png                      # Imagem decorativa
-├── db.sql                             # Estrutura e dados iniciais do banco de dados
-├── httpd-vhosts.conf                  # (Opcional) Configuração de virtual host para Apache
-└── README.txt                         # Este arquivo de documentação
+│   └── script.js                   # Scripts JS para interações do menu e busca
+├── src/                            # Imagens e assets
+│   ├── gordon.jpg                  # Logo principal
+│   ├── barra.png                   # Imagem decorativa
+│   ├── barra2.png                  # Imagem decorativa
+│   └── salto.png                   # Imagem decorativa
+├── db.sql                          # Estrutura e dados iniciais do banco de dados
+├── httpd-vhosts.conf               # (Opcional) Configuração de virtual host para Apache
+└── README.txt                      # Este arquivo de documentação
 ```
 
 - **app/**: Código PHP compartilhado, lógica de negócio, conexão e menu.
