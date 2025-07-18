@@ -188,10 +188,17 @@ CREATE TABLE reserva(
     HORA TIME NOT NULL,
 )
 
+CREATE TABLE seq_codbarras (
+    next_val INT NOT NULL
+);
+
+INSERT INTO seq_codbarras (next_val) VALUES (1000);  -- Valor inicial
+
+-- Tabela de usuários corrigida
 CREATE TABLE pm_usua(
-    CODIGO INT PRIMARY KEY,
+    CODIGO INT AUTO_INCREMENT PRIMARY KEY,
     NOME VARCHAR(100) NOT NULL,
-    ENDERECO VARCHAR(11) NOT NULL,
+    ENDERECO VARCHAR(255) NOT NULL,  -- Tamanho corrigido
     CIDADE VARCHAR(20) NOT NULL,
     BAIRRO VARCHAR(100),
     CEP VARCHAR(10) NOT NULL,
@@ -199,12 +206,22 @@ CREATE TABLE pm_usua(
     RG VARCHAR(20) NOT NULL,
     CIC VARCHAR(20) NOT NULL,
     TELEFONE VARCHAR(20) NOT NULL,
-    CODBARRAS VARCHAR(20) NOT NULL,
+    CODBARRAS INT UNIQUE,  -- Removido AUTO_INCREMENT
     QTD INT DEFAULT 1,
     DATACAD DATE,
     EMAIL VARCHAR(100),
-    SENHA VARCHAR(255) NOT NULL,
+    SENHA VARCHAR(255) NOT NULL
 );
+
+-- Trigger para auto-incremento do CODBARRAS
+DELIMITER //
+CREATE TRIGGER tr_codbarras_ai BEFORE INSERT ON pm_usua
+FOR EACH ROW
+BEGIN
+    UPDATE seq_codbarras SET next_val = next_val + 1;
+    SET NEW.CODBARRAS = (SELECT next_val FROM seq_codbarras);
+END; //
+DELIMITER ;
 
 CREATE TABLE pm_admin(
     MATRICULA INT PRIMARY KEY,

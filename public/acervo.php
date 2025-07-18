@@ -149,20 +149,26 @@ if (!empty($termo_pesquisa)) {
 // Filtro de disponibilidade para usuários comuns
 $filtro_disponibilidade = $_GET['filtro_disponibilidade'] ?? '';
 if (!$isAdmin) {
+    $disponibilidade_where = '';
     if ($filtro_disponibilidade === 'disponivel') {
-        $where = "WHERE (EMPRESTIMO = '' OR EMPRESTIMO IS NULL)";
+        $disponibilidade_where = "(EMPRESTIMO = '' OR EMPRESTIMO IS NULL)";
     } elseif ($filtro_disponibilidade === 'emprestado') {
-        $where = "WHERE (EMPRESTIMO IS NOT NULL AND EMPRESTIMO != '')";
-    } else {
-        $where = '';
+        $disponibilidade_where = "(EMPRESTIMO IS NOT NULL AND EMPRESTIMO != '')";
+    }
+    if ($disponibilidade_where) {
+        if ($where) {
+            $where = str_replace('WHERE', 'WHERE ' . $disponibilidade_where . ' AND', $where);
+        } else {
+            $where = 'WHERE ' . $disponibilidade_where;
+        }
     }
 }
 
 // Query para contar total de registros
-$sql_count = $isAdmin
-    ? "SELECT COUNT(*) AS total FROM pm_acerv $where"
-    : "SELECT COUNT(*) AS total FROM pm_acerv";
-if (!empty($params) && !empty($tipos) && strpos($tipos, 's') !== false) {
+$sql_count = "SELECT COUNT(*) AS total FROM pm_acerv $where";
+// Conta quantos parâmetros existem no SQL
+$param_count = substr_count($sql_count, '?');
+if (!empty($params) && !empty($tipos) && $param_count === count($params)) {
     $stmt_count = $conn->prepare($sql_count);
     $stmt_count->bind_param($tipos, ...$params);
     $stmt_count->execute();

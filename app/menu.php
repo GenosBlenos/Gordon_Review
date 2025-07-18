@@ -99,6 +99,12 @@
 <!-- Bootstrap Icons -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <style>
+.desktop-menu .navbar-nav.flex-row {
+    display: none !important;
+}
+.mobile-hamburger {
+    display: block !important;
+}
 @media (max-width: 991.98px) {
     .desktop-menu .navbar-nav.flex-row {
         display: none !important;
@@ -106,38 +112,13 @@
     .mobile-hamburger {
         display: block !important;
     }
-    .desktop-menu .w-100.d-flex {
-        flex-direction: row !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        position: relative;
-        min-height: 56px;
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-    }
-    .desktop-menu .navbar-brand {
-        position: static !important;
-        left: unset !important;
-        top: unset !important;
-        transform: none !important;
-        margin: 0 auto !important;
-        z-index: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0;
-    }
-    .desktop-menu .ms-3 {
-        margin-left: 0 !important;
-    }
-    .desktop-menu .ms-auto.me-3 {
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-    }
 }
 @media (min-width: 992px) {
-    .mobile-hamburger {
+    .desktop-menu .navbar-nav.flex-row {
         display: none !important;
+    }
+    .mobile-hamburger {
+        display: block !important;
     }
 }
 .mobile-menu-overlay {
