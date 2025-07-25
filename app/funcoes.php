@@ -12,18 +12,19 @@ function isLoggedIn() {
 }
 
 function calcularMulta($dataEmprestimo, $dataDevolucao) {
-    $dataEmp = new DateTime($dataEmprestimo);
-    $dataDev = new DateTime($dataDevolucao);
-    $hoje = new DateTime();
-    
-    // Prazo padrão: 7 dias
-    $prazoLimite = clone $dataEmp;
-    $prazoLimite->add(new DateInterval('P7D'));
-    
-    if ($hoje > $prazoLimite) {
-        $diasAtraso = $hoje->diff($prazoLimite)->days;
-        return $diasAtraso * 2; // R$ 2,00 por dia de atraso
+    try {
+        $dataEmp = new DateTime($dataEmprestimo);
+        $dataDev = new DateTime($dataDevolucao);
+
+        $prazoLimite = clone $dataEmp;
+        $prazoLimite->add(new DateInterval('P7D'));
+
+        if ($dataDev > $prazoLimite) {
+            $diasAtraso = $dataDev->diff($prazoLimite)->days;
+            return $diasAtraso * 2;
+        }
+    } catch (Exception $e) {
+        error_log("Erro ao calcular multa: " . $e->getMessage());
     }
-    
     return 0;
 }

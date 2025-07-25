@@ -20,7 +20,7 @@ $conn = new mysqli($host, $user, $pass, $db);
 
 if ($conn->connect_error) {
     error_log("Falha na conexão: " . $conn->connect_error);
-    die("Erro de conexão: " . $conn->connect_error);
+    die("Erro ao conectar com o banco de dados.");
 }
 
 // Configurações ESSENCIAIS
